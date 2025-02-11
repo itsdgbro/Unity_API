@@ -119,7 +119,7 @@ public class APIManager : MonoBehaviour
     /// Sends a GET request to the API to retrieve a nonce value.
     /// </summary>
     /// <returns>An IEnumerator for coroutine handling.</returns>
-    IEnumerator API_1()
+    public IEnumerator API_1()
     {
         Debug.Log("API 1");
         using (unityWebRequest = UnityWebRequest.Get(domainName + gateway_1))
@@ -152,7 +152,7 @@ public class APIManager : MonoBehaviour
     /// Sends a GET request to the API to retrieve game result data.
     /// </summary>
     /// <returns>An IEnumerator for coroutine handling.</returns>
-    IEnumerator API_2()
+    public IEnumerator API_2()
     {
         using (unityWebRequest = UnityWebRequest.Get((domainName + gateway_2) + "?gameid=" + gameID))
         {
@@ -180,7 +180,7 @@ public class APIManager : MonoBehaviour
     /// <param name="soundOnOff">Indicates whether the sound is on or off.</param>
     /// <param name="musicOnOff">Indicates whether the music is on or off.</param>
     /// <returns>An IEnumerator for coroutine handling.</returns>
-    IEnumerator Post_API_Start(
+    public IEnumerator Post_API_Start(
         int level,
         bool soundOnOff,
         bool musicOnOff)
@@ -235,7 +235,7 @@ public class APIManager : MonoBehaviour
     /// <param name="levelData">The data related to the level played.</param>
     /// <param name="isLevelCompleted">Indicates whether the level was completed successfully.</param>
     /// <returns>An IEnumerator for coroutine handling.</returns>
-    IEnumerator Post_API_End(
+    public IEnumerator Post_API_End(
         int pointsEarned,
         int totalPoints,
         string levelData,
