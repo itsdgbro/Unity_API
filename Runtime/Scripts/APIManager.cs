@@ -115,19 +115,6 @@ public class APIManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(Post_API_Start(level, soundOnOff, musicOnOff));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            StartCoroutine(Post_API_End(pointsEarned, totalPoints, levelData, isLevelCompleted));
-        }
-    }
-
     /// <summary>
     /// Sends a GET request to the API to retrieve a nonce value.
     /// </summary>
