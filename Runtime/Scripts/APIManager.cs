@@ -53,6 +53,14 @@ public class APIManager : MonoBehaviour
     #endregion
     #endregion
 
+
+    [Header("Runtime Testing Variables")]
+
+    [Tooltip("Check this box for runtime testing only. Uncheck before building the game.")]
+    [SerializeField] private bool isForTesting;
+    [Tooltip("Enter the domain name for testing purposes. e.g. http://localhost/wordpress")]
+    [SerializeField] private string domainNameTest;
+
     // UnityWebRequest object
     private UnityWebRequest unityWebRequest;
 
@@ -60,12 +68,17 @@ public class APIManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
-        // comment off this line if you want to test on local server and comment the next line method GetOrigin()
-        // domainName = "http://localhost/wordpress";
-
-        GetOrigin();
-
-        StartCoroutine(API_1());
+        if (isForTesting)
+        {
+            domainName = domainNameTest;
+            StartCoroutine(API_1());
+            return;
+        }
+        else
+        {
+            GetOrigin();
+            StartCoroutine(API_1());
+        }
     }
 
     /// <summary>
