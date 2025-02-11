@@ -1,0 +1,15 @@
+{
+    "name": "com.chimpvine.cv_api_unity",
+    "version": "1.0.0",
+    "displayName": "CV API Unity",
+    "description": "A Unity package for API integration.",
+    "author": {
+        "name": "Dipak Gurung",
+        "email": "dipakgrg524@gmail.com"
+    },
+    "keywords": [
+        "custom",
+        "package",
+        "unity"
+    ]
+}
