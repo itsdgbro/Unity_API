@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 public class APIManager : MonoBehaviour
 {
+    public static APIManager instance;
 
     #region Reference to JSPlugin
     [DllImport("__Internal")]
@@ -64,9 +65,22 @@ public class APIManager : MonoBehaviour
     // UnityWebRequest object
     private UnityWebRequest unityWebRequest;
 
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
 
         if (isForTesting)
         {
