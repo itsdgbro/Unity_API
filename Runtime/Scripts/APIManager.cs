@@ -86,32 +86,15 @@ public class APIManager : MonoBehaviour
     /// </summary>
     private void GetOrigin()
     {
-        try
+        // retrive the server gateway
+        if (string.IsNullOrEmpty(GetIframeData()))
         {
-            string fullUrl = Application.absoluteURL;
-            Uri uri = new Uri(fullUrl);
-            string origin = $"{uri.Scheme}://{uri.Host}";
-
-            if (!uri.IsDefaultPort)
-            {
-                origin += $":{uri.Port}";
-            }
-
-            // retrive the server gateway
-            if (string.IsNullOrEmpty(GetIframeData()))
-            {
-                Debug.LogError("Failed to retrieve the iframe 'data-game' attribute.");
-            }
-            else
-            {
-                // set the gateway path 
-                origin = origin + "/" + GetIframeData();
-                domainName = origin;
-            }
+            Debug.LogError("Failed to retrieve the iframe 'data-game' attribute.");
         }
-        catch (Exception ex)
+        else
         {
-            Debug.LogError("Error extracting origin: " + ex.Message);
+            // set the gateway path 
+            domainName = GetIframeData();
         }
     }
 
