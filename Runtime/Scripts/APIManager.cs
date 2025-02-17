@@ -8,11 +8,11 @@ using UnityEngine.Events;
 
 public class APIManager : MonoBehaviour
 {
-//singleton
+    //singleton
     public static APIManager instance;
-    
-//this event is invoked when api is successfully called, so listen to this event at loading screen (to complete the load bar), also update data on other script received from get api on this script after this event is invoked
-     public UnityEvent onApiSuccess = new UnityEvent();
+
+    //this event is invoked when api is successfully called, so listen to this event at loading screen (to complete the load bar), also update data on other script received from get api on this script after this event is invoked
+    public UnityEvent onApiSuccess = new UnityEvent();
 
     #region Reference to JSPlugin
     [DllImport("__Internal")]
