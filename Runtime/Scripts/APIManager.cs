@@ -118,7 +118,6 @@ public class APIManager : MonoBehaviour
     /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator API_1()
     {
-        Debug.Log("API 1");
         using (unityWebRequest = UnityWebRequest.Get(domainName + gateway_1))
         {
             yield return unityWebRequest.SendWebRequest();
@@ -138,7 +137,6 @@ public class APIManager : MonoBehaviour
                 if (response.success)
                 {
                     nonceValue = response.data;
-                    Debug.Log("Nonce: " + nonceValue);
                     StartCoroutine(API_2());
                 }
             }
