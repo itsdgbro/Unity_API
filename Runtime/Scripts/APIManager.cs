@@ -4,11 +4,15 @@ using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
-
+using UnityEngine.Events;
 
 public class APIManager : MonoBehaviour
 {
+//singleton
     public static APIManager instance;
+    
+//this event is invoked when api is successfully called, so listen to this event at loading screen (to complete the load bar), also update data on other script received from get api on this script after this event is invoked
+     public UnityEvent onApiSuccess = new UnityEvent();
 
     #region Reference to JSPlugin
     [DllImport("__Internal")]
@@ -164,6 +168,8 @@ public class APIManager : MonoBehaviour
                 API_2_Response response = JsonUtility.FromJson<API_2_Response>(unityWebRequest.downloadHandler.text);
                 level = response.Level;
                 API_2_Success = true;
+                onApiSuccess.Invoke();
+
             }
         }
     }
