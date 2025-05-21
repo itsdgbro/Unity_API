@@ -108,6 +108,7 @@ public class APIManager : MonoBehaviour
         if (string.IsNullOrEmpty(GetIframeData()))
         {
             Debug.LogError("Failed to retrieve the iframe 'data-game' attribute.");
+            return;
         }
         else
         {
