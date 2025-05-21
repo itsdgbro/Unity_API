@@ -95,7 +95,6 @@ public class APIManager : MonoBehaviour
         else
         {
             GetOrigin();
-            StartCoroutine(API_1());
         }
     }
 
@@ -114,6 +113,7 @@ public class APIManager : MonoBehaviour
         {
             // set the gateway path 
             domainName = GetIframeData();
+            StartCoroutine(API_1());
         }
     }
 
