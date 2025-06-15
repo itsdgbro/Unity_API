@@ -4,15 +4,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.Events;
 
 public class APIManager : MonoBehaviour
 {
     //singleton
-    public static APIManager instance;
+    public static APIManager Instance;
 
     //this event is invoked when api is successfully called, so listen to this event at loading screen (to complete the load bar), also update data on other script received from get api on this script after this event is invoked
-    public UnityEvent onApiSuccess = new UnityEvent();
+    public event Action OnApiSuccess;
 
     #region Reference to JSPlugin
     [DllImport("__Internal")]
@@ -44,8 +43,8 @@ public class APIManager : MonoBehaviour
     // API Response
     #region API Response
     [Header("API Response & Error")]
-    public string APIResponse;
-    public string APIError;
+    private string APIResponse;
+    private string APIError;
     public bool API_2_Success { get; set; }
     #endregion
 
@@ -61,19 +60,22 @@ public class APIManager : MonoBehaviour
 
     [Header("Runtime Testing Variables")]
 
-    [Tooltip("Check this box for runtime testing only. Uncheck before building the game.")]
-    [SerializeField] private bool isForTesting;
+    //[Tooltip("Check this box for runtime testing only. Uncheck before building the game.")]
+    [SerializeField] private bool disableAPI = false;
+    private bool isForTesting;
     [Tooltip("Enter the domain name for testing purposes. e.g. http://localhost/wordpress")]
-    [SerializeField] private string domainNameTest;
+    private string domainNameTest;
 
     // UnityWebRequest object
     private UnityWebRequest unityWebRequest;
 
+    public bool GetIsApiDisabled() => disableAPI;
+
     void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
@@ -85,17 +87,27 @@ public class APIManager : MonoBehaviour
 
     void Start()
     {
+#if UNITY_EDITOR
+            isForTesting = true;
+#else
+        isForTesting = false;
+#endif
+
+        if (disableAPI)
+        {
+            OnApiSuccess?.Invoke();
+            Debug.LogWarning("APIManager: API is disabled.");
+            return;
+        }
 
         if (isForTesting)
         {
-            domainName = domainNameTest;
+            domainName = string.IsNullOrEmpty(domainNameTest) ? "http://localhost/wordpress" : domainNameTest;
             StartCoroutine(API_1());
-            return;
         }
         else
         {
             GetOrigin();
-            StartCoroutine(API_1());
         }
     }
 
@@ -108,11 +120,13 @@ public class APIManager : MonoBehaviour
         if (string.IsNullOrEmpty(GetIframeData()))
         {
             Debug.LogError("Failed to retrieve the iframe 'data-game' attribute.");
+            return;
         }
         else
         {
             // set the gateway path 
             domainName = GetIframeData();
+            StartCoroutine(API_1());
         }
     }
 
@@ -122,6 +136,7 @@ public class APIManager : MonoBehaviour
     /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator API_1()
     {
+        if (disableAPI) yield break;
         using (unityWebRequest = UnityWebRequest.Get(domainName + gateway_1))
         {
             yield return unityWebRequest.SendWebRequest();
@@ -153,6 +168,7 @@ public class APIManager : MonoBehaviour
     /// <returns>An IEnumerator for coroutine handling.</returns>
     public IEnumerator API_2()
     {
+        if (disableAPI) yield break;
         using (unityWebRequest = UnityWebRequest.Get((domainName + gateway_2) + "?gameid=" + gameID))
         {
             unityWebRequest.SetRequestHeader(header, nonceValue);
@@ -168,8 +184,7 @@ public class APIManager : MonoBehaviour
                 API_2_Response response = JsonUtility.FromJson<API_2_Response>(unityWebRequest.downloadHandler.text);
                 level = response.Level;
                 API_2_Success = true;
-                onApiSuccess.Invoke();
-
+                OnApiSuccess?.Invoke();
             }
         }
     }
@@ -186,6 +201,7 @@ public class APIManager : MonoBehaviour
         bool soundOnOff,
         bool musicOnOff)
     {
+        if (disableAPI) yield break;
         String url = domainName + gateway_3;
         Post_Start_Dao postData = new()
         {
@@ -243,6 +259,7 @@ public class APIManager : MonoBehaviour
         bool isLevelCompleted
         )
     {
+        if (disableAPI) yield break;
         String url = domainName + gateway_4;
 
         Post_End_Dao postData = new()
