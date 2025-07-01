@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 public class APIManager : MonoBehaviour
 {
     //singleton
-    public static APIManager Instance;
+    public static APIManager Instance { get; private set; }
 
     //this event is invoked when api is successfully called, so listen to this event at loading screen (to complete the load bar), also update data on other script received from get api on this script after this event is invoked
     public event Action OnApiSuccess;
@@ -73,18 +73,16 @@ public class APIManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+        
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
+    
     void Start()
     {
 #if UNITY_EDITOR
@@ -111,6 +109,12 @@ public class APIManager : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+    
     /// <summary>
     /// Retrieves the origin of the current application URL and updates the domain name.
     /// </summary>
