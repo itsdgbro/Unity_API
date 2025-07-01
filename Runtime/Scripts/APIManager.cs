@@ -143,7 +143,7 @@ public class APIManager : MonoBehaviour
 
             if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError || unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError(unityWebRequest.error);
+                Debug.LogError("Server Response: " + unityWebRequest.downloadHandler.text);
             }
             else
             {
@@ -177,7 +177,7 @@ public class APIManager : MonoBehaviour
 
             if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError || unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError(unityWebRequest.error);
+                Debug.LogError("Server Response: " + unityWebRequest.downloadHandler.text);
             }
             else
             {
@@ -234,7 +234,7 @@ public class APIManager : MonoBehaviour
             // Handle response
             if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError || unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError("API Error: " + unityWebRequest.error);
+                Debug.LogError("Server Response: " + unityWebRequest.downloadHandler.text);
             }
             else
             {
@@ -294,7 +294,7 @@ public class APIManager : MonoBehaviour
             // Handle response
             if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError || unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError("API Error: " + unityWebRequest.error);
+                Debug.LogError("Server Response: " + unityWebRequest.downloadHandler.text);
             }
             else
             {
